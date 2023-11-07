@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시글 상세 페이지</title>
+    <title th:text="${'게시판 - ' + board.title}">게시판 - 타이틀</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-     <h1 th:text="${board.title}">제목</h1>
-     <p th:text="${board.content}">내용</p>
-     <a href="#" th:href="${'/download?fileName='+file.fileName}">[DOWNLOAD]</a>
-     <a th:href="@{${board.filepath}}">다운받기</a>
-     <a th:href="@{/board/delete(id=${board.id})}">글 삭제</a>
-     <a th:href="@{/board/modify/{id}(id = ${board.id})}">글 수정</a>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title" th:text="${board.title}">게시글 제목</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="${board.content}">게시글 내용</p>
+                <small>첨부된 파일명: <span th:text="${board.filename}"></span></small>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col-auto">
+                <a class="btn btn-info btn-lg" th:href="@{/board/download/{id}(id=${board.id})}">다운로드</a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-danger btn-lg" th:href="@{/board/delete(id=${board.id})}">글 삭제</a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-warning btn-lg" th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

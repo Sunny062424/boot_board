@@ -31,11 +31,11 @@ public class BoardService {
             UUID uuid = UUID.randomUUID(); //파일이름에 붙일 랜덤이름
     
             String fileName = uuid + "_" + file.getOriginalFilename();
-    
+            //파일 생성
             File saveFile = new File(projectPath, fileName);
-    
+            //서버로 전송
             file.transferTo(saveFile);
-    
+
             board.setFilename(fileName);
             board.setFilepath("/files/" + fileName);
     
@@ -47,6 +47,14 @@ public class BoardService {
 
             boardRepository.save(board);
         }
+    }
+
+    //파일경로 불러오기
+    public String getFilepath(Integer id){
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static";
+        Board board = boardRepository.findOneById(id);
+        String filepath = board.getFilepath();
+        return projectPath+filepath;
     }
 
     //게시글 리스트 불러오기 처리

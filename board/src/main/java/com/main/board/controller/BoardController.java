@@ -4,10 +4,14 @@ import com.main.board.entity.Board;
 import com.main.board.repository.BoardRepository;
 import com.main.board.service.BoardService;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.tomcat.util.file.ConfigurationSource.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -101,24 +105,5 @@ public class BoardController {
         model.addAttribute("searchUrl", "/board/list");
         return "message";
     }
-
-    //파일 다운로드
-    @GetMapping("/board/download/{id}")
-    public ResponseEntity<?> downloadAttach(@PathVariable Integer id) throws MalformedURLException {
-
-        Board file = BoardService.boardFile(filename);
-
-        UrlResource resource = new UrlResource("file:" + file.getSavedPath());
-
-        String encodedFileName = UriUtils.encode(file.getOrgNm(), StandardCharsets.UTF_8);
-
-        // 파일 다운로드 대화상자가 뜨도록 하는 헤더를 설정해주는 것
-        // Content-Disposition 헤더에 attachment; filename="업로드 파일명" 값을 준다.
-        String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition).body(resource);
-    }
-    
-    
 
 }
